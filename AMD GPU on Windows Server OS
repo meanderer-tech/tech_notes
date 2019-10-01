@@ -1,0 +1,32 @@
+It turns out that AMD GPUs have no official support on Windows server flavours, this is done on purpose to avoid supporting the platform on AMD's part. 
+We can manually hack it in, just don't expect AMD to help when there are problems. 
+
+1. download the driver from official website, get the version the server is based on, for example
+      Win2012 -> Windows 8
+      Win2016 -> Windows 10
+2. Run the self extracting archive, it extracts to C:\AMD by default
+3. Find the inf files in the path C:\AMD\<package name>\Packages\Drivers\Display\WT6A_INF\*.inf
+4. Find all instances of 10.0.1 and change it to 10.0 , the .1 at the end restricts the scope to workstation version of Windows, removing it puts server flavour support back.
+5. Find CIMManifest.xml from C:\AMD\<package name>\Config and add the following tag called "table name="ATI_OS_Include" and put down the following directive to include server2016
+  <table name="ATI_OS_Include">
+  <col key="yes" def="i2">Index</col>
+  <col def="s150">OS</col>
+  <col def="s150">Version</col>
+  <col def="S8">Is64bit</col>
+  <col def="S8">IsMCE</col>
+  <col def="S8">IsWindowsServer</col>
+  <row>
+  <td>1</td>
+  <td>WIN_Server_2016</td>
+  <td>10.0</td>
+  <td>Yes</td>
+  <td></td>
+  <td>Yes</td>
+  </row>
+  </table>
+  There may be other entries allowing other OS versions to install, but they are irrelevant. 
+ 6. move back to the root of the package and run setup.exe
+ 
+ This instructions are adopted from forum threads:
+ https://community.amd.com/thread/214098
+ https://www.reddit.com/r/AMDHelp/comments/9zw5y5/installing_recent_adrenalin_drivers_on_windows/
