@@ -1,0 +1,2 @@
+the driver package installs a service that monitors the USB stick attached and trigger a usb_modeswitch command as described here
+https://www.draisberghof.de/usb_modeswitch/
